@@ -1,31 +1,36 @@
-document.getElementById("voteForm").addEventListener("submit", function (event) {
-  event.preventDefault(); // Prevent form from refreshing the page
+    const form = document.getElementById('voteForm');
 
-  const nameInput = document.getElementById("name").value.trim();
-  const ageInput = document.getElementById("age").value.trim();
+    form.addEventListener('submit', function(e) {
+      e.preventDefault(); // Prevent form from reloading the page
 
-  const age = parseInt(ageInput);
+      const name = document.getElementById('name').value.trim();
+      const age = document.getElementById('age').value.trim();
 
-  // Input validation
-  if (!nameInput || isNaN(age)) {
-    alert("Please enter valid details."); // Note: Period at the end
-    return;
-  }
-
-  // Promise to simulate a delay and check age
-  new Promise((resolve, reject) => {
-    setTimeout(() => {
-      if (age > 18) {
-        resolve(`Welcome, ${nameInput}. You can vote.`);
-      } else {
-        reject(`Oh sorry ${nameInput}. You aren't old enough.`);
+      // Validate inputs
+      if (!name || !age) {
+        alert('Please enter valid details.');
+        return;
       }
-    }, 4000); // 4-second delay
-  })
-    .then((message) => {
-      alert(message);
-    })
-    .catch((errorMessage) => {
-      alert(errorMessage);
+
+      const ageNumber = parseInt(age);
+
+      // Create a Promise to simulate delay and decision
+      const voteCheck = new Promise((resolve, reject) => {
+        setTimeout(() => {
+          if (ageNumber > 18) {
+            resolve(name);
+          } else {
+            reject(name);
+          }
+        }, 4000);
+      });
+
+      // Handle the promise result
+      voteCheck
+        .then((userName) => {
+          alert(`Welcome, ${userName}. You can vote.`);
+        })
+        .catch((userName) => {
+          alert(`Oh sorry ${userName}. You aren't old enough.`);
+        });
     });
-});
